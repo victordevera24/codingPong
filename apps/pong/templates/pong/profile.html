@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'pong/css/profile.css' %}" />
+    <title>Document</title>
+</head>
+<body>
+    <div class='content'>
+        <h1><img src="{% static 'pong/images/coding_pong.png' %}" alt='Coding Pong'></h1>
+
+        <ul>
+            <li><a href='/dashboard'>Home</a></li>
+            <li><a href='/leaderboard'>Leaderboard</a></li>
+            <li><a href='/ninjas'>Ninjas</a></li>
+            <li><a  href='/ninja/{{request.session.id}}'>Messages</a></li>
+            <li><p class='name'>Hello {{request.session.name}}!</p>
+            <form action='/'>
+                <input type='submit' value='Log out' class='log'>
+            </form></li>
+        </ul>
+        <div class='profile'>
+            <h2>{{u.first_name}}</h2>
+            <p>Member since: {{u.created_at|date:'N j, o'}}</p>
+            <p>Record:{{u.win}}-{{u.loss}}</p>
+            {% if u.id == request.session.id %}
+            <a href='/update/{{request.session.id}}' class='update'>update</a>
+            {% endif %}
+        </div>
+        <div class='right'>
+            {% for m in messages%}
+                <tr>
+                    <p style='font-size:1.2em'>{{m.user.first_name}} <span style='font-size: .7em'>({{m.created_at}})</span>:</p>
+                    <p>{{m.content}}</p>
+                </tr>
+                
+            {% endfor %}  
+
+            <p>Post a message</p>
+            <form action='/post_message/{{u.id}}' method='post'>
+                {% csrf_token %}
+                <textarea name='mess_content' class='mess_box'></textarea>
+                <p><input type='submit' value='Post a message'></p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

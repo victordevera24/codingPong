@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'pong/css/gameon.css' %}" />
+    <title>Game on!</title>
+</head>
+<body>
+    <div class='content'></div>
+    <h1><img src="{% static 'pong/images/coding_pong.png' %}" alt='Coding Pong'></h1>
+    <h2>GAME ON!</h2>
+    
+ 
+    <div>
+    <a href='/ranking/{{opp.id}}/{{use.id}}'>{{opp.first_name}}</a>
+     <span>vs</span>
+    <a href='/ranking/{{use.id}}/{{opp.id}}'>{{use.first_name}}</a>
+    </div>
+    <p class='won'>Click winner!</p>
+    </div>
+</body>
+</html>

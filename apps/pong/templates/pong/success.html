@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'pong/css/success.css' %}" />
+    <title>Coding Pong</title>
+</head>
+<body>
+    <content>
+    <h1><img src="{% static 'pong/images/coding_pong.png' %}" alt='Coding Pong'></h1>
+
+    <ul>
+        <li><a href='/dashboard'>Home</a></li>
+        <li><a href='/leaderboard'>Leaderboard</a></li>
+        <li><a href='/ninjas'>Ninjas</a></li>
+        <li><a href='/ninja/{{request.session.id}}'>Messages</a></li>
+ 
+    <li><p class='name'>Hello {{request.session.name}}!</p>
+    <form action='/'>
+        <input type='submit' value='Log out'>
+    </form></li>
+    </ul>
+    <h3>Ninjas ready to play!</h3>
+    <table>
+        <thead>
+                <th>Name:</th>
+                <th>Stack:</th>
+                <th>Added on:</th>
+                <th>Rating:</th>
+                <th></th>
+        </thead>
+        {% for u in users %}
+            {% if u.play == True %}
+                {% if not u.id == request.session.id %}
+                    <tr>
+                        <td><a href='/ninja/{{u.id}}' class='ninja'>{{u.first_name}}</a></td>
+                        <td>{{u.stack}}</td>
+                        <td>{{u.updated_at}}</td>
+                        <td>{{u.rating}}</td>
+                        {% if u.id == request.session.id %}
+                            <td><a href='/remove'>Cancel</a></td>
+                        {% endif %}
+                        {% if not u.id == request.session.id %}
+                            <td><a href='/accept/{{u.id}}'>Accept game</a></td>
+                        {% endif %}
+                    </tr>
+                {% endif %}
+                {% if u.id == request.session.id %}
+                    <tr>
+                        <td style='background-color:#E9E8EB'><a href='/ninja/{{u.id}}' class='ninja'>{{u.first_name}}</a></td>
+                        <td style='background-color:#E9E8EB'>{{u.stack}}</td>
+                        <td style='background-color:#E9E8EB'>{{u.updated_at}}</td>
+                        <td style='background-color:#E9E8EB'>{{u.rating}}</td>
+                        {% if u.id == request.session.id %}
+                            <td style='background-color:#E9E8EB'><a href='/remove'>Cancel</a></td>
+                        {% endif %}
+                        {% if not u.id == request.session.id %}
+                            <td style='background-color:#E9E8EB'><a href='/accept/{{u.id}}'>Accept game</a></td>
+                        {% endif %}
+                    </tr>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </table>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}" style='color:red'{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <a class='add' href="/add/{{request.session.id}}">Ready Player One</a>
+    </content>
+</body>
+</html>

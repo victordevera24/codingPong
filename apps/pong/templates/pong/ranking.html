@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'pong/css/ranking.css' %}" />
+    <title>Rankings</title>
+</head>
+<body>
+    <div class='content'>
+        <h1><img src="{% static 'pong/images/coding_pong.png' %}" alt='Coding Pong'></h1>
+        <ul>
+            <li><a href='/dashboard'>Home</a></li>
+            <li><a href='/leaderboard'>Leaderboard</a></li>
+            <li><a href='/ninjas'>Ninjas</a></li>
+            <li><a  href='/ninja/{{request.session.id}}'>Messages</a></li>
+            <li><p class='name'>Hello {{request.session.name}}!</p>
+            <form action='/'>
+                <input type='submit' value='Log out'>
+            </form></li>
+        </ul>
+        <p class='lead'>Leaderboard</p>
+        <ol>
+            <table>
+                {% for u in users %}
+                {% if not u.id == request.session.id %}
+                    <tr>
+                        <td><li></li></td>
+                        <td><a href='/ninja/{{u.id}}' class='ninja'>{{u.first_name}}</a></td>
+                        <td>rating: {{u.rating}}</td>
+                        <td>record: {{u.win}}-{{u.loss}}</td>
+                    </tr>
+                {% endif %}
+                {% if u.id == request.session.id %}
+                    <tr>
+                        <td style='background-color:#E9E8EB'><li></li></td>
+                        <td style='background-color:#E9E8EB'><a href='/ninja/{{u.id}}' class='ninja'>{{u.first_name}}</a></td>
+                        <td style='background-color:#E9E8EB'>rating: {{u.rating}}</td>
+                        <td style='background-color:#E9E8EB'>record: {{u.win}}-{{u.loss}}</td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+        </ol>
+    </div>
+</body>
+</html>
